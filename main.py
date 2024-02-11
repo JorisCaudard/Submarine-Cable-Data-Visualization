@@ -1,28 +1,54 @@
-import geopandas as gpd
-import matplotlib.pyplot as plt
-import contextily as cx
+###Importing libraries
+import folium
+from folium.plugins import AntPath
+import json
+import random
+import streamlit
 
-def pre_process():
-    points_data = gpd.read_file("./data/landing_points.geojson")
-    line_data = gpd.read_file("./data/submarine_cables.geojson")
+def map_init():
+    """
+    Initializing a map object
+    """
+    mapObj = folium.Map(zoom_control=False,
+                    control_scale=False,
+                    #tiles='Stamen Terrain',
+                    wrap_control=False)
+    return mapObj
 
-    points_data = points_data.to_crs(epsg=3857)
-    line_data = line_data.to_crs(epsg=3857)
 
-    return points_data, line_data
+def data_init():
+    """
+    Initializing data in a geojson format
+    """
+    geojsonFilePath = "./data/submarine_cables.geojson"
+    geojsonData = json.load(open(geojsonFilePath))
 
+    return geojsonData
+
+
+def line_creating(map, data, prop = 1):
+    """
+    Creating AntPath instances of each line in geojson file
+    """
+    for line in data['features']:
+        if random.random() <= prop:
+            lineCoordinates = line['geometry']['coordinates']
+            lineCoordinates = [(point[1], point[0]) for point in lineCoordinates]
+            AntPath(locations=lineCoordinates,
+                    delay = random.randint(100, 800),
+                    color='rgba(255, 255, 255, 0.1)',
+                    pulse_color='green').add_to(map)
+    return mapObj
+
+def map_saving(map):
+    """
+    Saving a map in a mapObj.html file"""
+    map.save('maps/mapObj.html')
 
 if __name__ == "__main__":
-    points_data, line_data = pre_process()
+    mapObj = map_init()
+    dataGeojson = data_init()
 
-    fig, ax = plt.subplots(figsize=(10,10))
-    points_data.plot(ax=ax, color = 'red')
-    line_data.plot(ax = ax, color = 'blue')
+    fullMap = line_creating(mapObj, dataGeojson, 0.2)
 
-    print(points_data.crs, line_data.crs)
-
-    #cx.add_basemap(ax)  
-
-
-    plt.show()
-    #return points_data.head()
+    map_saving(fullMap)
