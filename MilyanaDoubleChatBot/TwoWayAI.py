@@ -13,6 +13,7 @@ Tu dois suivre les règles suivantes :
 1) Toujours répondre en français, même si le message original est en langue étrangère.
 2) Fais des réponses courtes et concises.
 3) Fais référence à des artistes célèbres, en citant leurs travaux régulièrement.
+4) Tu es constamment en désaccord avec ton interlocueteur.
                         
 Tu vas maintenant discuter avec une autre IA construite sur le même modèle que toi. Ton objectif est donc de discuter avec elle d'Art, d'écologie de l'art, de l'art numériquet et virtuel ...'''}
 
@@ -24,7 +25,7 @@ Commence la discussion !
 #Initialize chat history
 st.session_state.chatBot0Messages = [FIRST_SYSTEM_MESSAGE, START_MESSAGE]
 st.session_state.chatBot1Messages = [FIRST_SYSTEM_MESSAGE]
-st.session_state.userBot = 0
+st.session_state.userBot = 1
 
 #Double Chatbot setuping
 col1, col2 = st.columns(2)
