@@ -3,7 +3,8 @@ import folium
 from folium.plugins import AntPath
 import json
 import random
-import streamlit
+import streamlit as st
+from streamlit_folium import st_folium
 
 ###Global variables
 lineColorPalette = ['#FF6E40', '#FF4081', '#7C4DFF', '#00E5FF', '#64DD17', '#9C27B0', '#FFD54F']
@@ -24,7 +25,7 @@ def data_init():
     """
     Initializing data in a geojson format
     """
-    geojsonFilePath = "./data/submarine_cables.geojson"
+    geojsonFilePath = "SubmarineDataVisualization/data/submarine_cables.geojson"
     geojsonData = json.load(open(geojsonFilePath))
 
     return geojsonData
@@ -57,12 +58,14 @@ def map_saving(map):
     Saving a map in a mapObj.html file
     :map: A folium map object
     """
-    map.save('maps/mapObj.html')
+    map.save('SubmarineDataVisualization/maps/mapObj.html')
 
 if __name__ == "__main__":
     mapObj = map_init()
     dataGeojson = data_init()
 
     fullMap = line_creating(mapObj, dataGeojson)
+
+    st.title("Title test")
 
     map_saving(fullMap)
