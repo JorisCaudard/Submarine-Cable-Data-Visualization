@@ -1,11 +1,11 @@
 import openai
 import streamlit as st
 
-st.title("Michel Chat Bot")
+st.title("Simple Chat Bot")
 
 client = openai.OpenAI(api_key= st.secrets["OPENAI_API_KEY"])
 
-FIRST_SYSTEM_MESSAGE = {"role": "assistant", "system_messages": True, "content": '''
+FIRST_SYSTEM_MESSAGE = {"role": "system", "content": '''
 Tu es une intelligence artificielle, spécialement conçue pour aider des personnes sur des questions dans le domaine artistique.
 
 Tu dois suivre les règles suivantes :
@@ -26,7 +26,7 @@ if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
 
 for message in st.session_state.messages:
-    if not message["system_messages"]:
+    if message["role"] != 'system':
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
@@ -35,7 +35,7 @@ if prompt := st.chat_input("Input prompt here"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    st.session_state.messages.append({"role": "user", "system_messages": False,
+    st.session_state.messages.append({"role": "user", 
                                       "content": prompt})
     
 
@@ -51,5 +51,4 @@ if prompt := st.chat_input("Input prompt here"):
         response = st.write_stream(stream)
 
     st.session_state.messages.append({"role": "assistant",
-                                      "system_messages": False,
                                       "content": response})
