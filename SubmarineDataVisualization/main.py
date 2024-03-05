@@ -3,8 +3,6 @@ import folium
 from folium.plugins import AntPath
 import json
 import random
-import streamlit as st
-from streamlit_folium import st_folium
 
 ###Global variables
 lineColorPalette = ['#FF6E40', '#FF4081', '#7C4DFF', '#00E5FF', '#64DD17', '#9C27B0', '#FFD54F']
@@ -65,7 +63,5 @@ if __name__ == "__main__":
     dataGeojson = data_init()
 
     fullMap = line_creating(mapObj, dataGeojson)
-
-    st.title("Title test")
 
     map_saving(fullMap)
