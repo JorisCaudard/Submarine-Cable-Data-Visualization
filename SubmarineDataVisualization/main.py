@@ -5,6 +5,7 @@ import json
 import random
 
 ###Global variables
+#TODO: Change Syntax
 lineColorPalette = ['#FF6E40', '#FF4081', '#7C4DFF', '#00E5FF', '#64DD17', '#9C27B0', '#FFD54F']
 
 def map_init():
