@@ -3,8 +3,6 @@ import folium
 from folium.plugins import AntPath
 import json
 import random
-import streamlit as st
-from streamlit_folium import st_folium
 
 ###Global variables
 lineColorPalette = ['#FF6E40', '#FF4081', '#7C4DFF', '#00E5FF', '#64DD17', '#9C27B0', '#FFD54F']
@@ -40,6 +38,16 @@ def line_creating(map, data, prop = 1):
     """
     for line in data['features']:
         if random.random() <= prop:
+
+            html = f"""
+            <div id="infoWindow">
+                <h1>Informations</h1>
+                    <li><b>Nom :</b> {line['properties']['name']}</li>
+                    <li><b>Propriétaire(s) :</b> {line['properties']['owners']}</li>
+                    <li><b>Longueur :</b> {line['properties']['length']}</li>
+            </div>
+            """
+
             lineCoordinates = line['geometry']['coordinates']
             lineCoordinates = [(point[1], point[0]) for point in lineCoordinates]
             AntPath(locations=lineCoordinates,
@@ -49,7 +57,7 @@ def line_creating(map, data, prop = 1):
                     pulse_color=random.choice(lineColorPalette),
                     reversed=random.choice([True, False]),
                     dash_array=[random.randint(10,50),50],
-                    popup=line['properties']['name']
+                    popup=html
                     ).add_to(map)
     return mapObj
 
@@ -66,6 +74,8 @@ if __name__ == "__main__":
 
     fullMap = line_creating(mapObj, dataGeojson)
 
-    st.title("Title test")
-
     map_saving(fullMap)
+
+
+
+
